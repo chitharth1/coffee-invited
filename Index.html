@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>For You ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to right, #ffdde1, #ee9ca7);
+      font-family: Arial;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(0,0,0,0.2);
+      max-width: 320px;
+      position: relative;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .yes { background: #ff4d6d; color: white; }
+
+    .no {
+      background: #ccc;
+      position: absolute;
+      left: 55%;
+      top: 65%;
+    }
+
+    #tease {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+  <h2>Indhu, shall we go for a coffee? ☕❤️</h2>
+  <div id="tease"></div>
+
+  <button class="yes" onclick="yesClicked()">Yes 💖</button>
+  <button class="no" onclick="escapeNo(event)">No 🙈</button>
+</div>
+
+<script>
+const noBtn = document.querySelector('.no');
+const tease = document.getElementById('tease');
+
+const msgs = ["Are you sure? 😄","Think again ☕","Just say Yes 💖"];
+let i = 0;
+
+function escapeNo(e){
+  e.preventDefault();
+  noBtn.style.left = Math.random()*80 + "%";
+  noBtn.style.top = Math.random()*80 + "%";
+  tease.innerText = msgs[i++ % msgs.length];
+}
+
+function yesClicked(){
+  document.getElementById("card").innerHTML = `
+    <h2>May 7th Afternoon ☕</h2>
+
+    <p>What would you like?</p>
+
+    <label><input type="radio" name="q" value="Coffee ☕"> Coffee</label><br>
+    <label><input type="radio" name="q" value="Ice Cream 🍦"> Ice Cream</label><br>
+    <label><input type="radio" name="q" value="Both 😏"> Both</label><br><br>
+
+    <button onclick="submitAnswer()">Submit</button>
+  `;
+}
+
+function submitAnswer(){
+  const selected = document.querySelector('input[name="q"]:checked');
+
+  if(!selected){
+    alert("Choose one 😄");
+    return;
+  }
+
+  const answer = selected.value;
+  const phone = "919876543210"; // 🔁 change
+  const msg = "Hey 😄 I chose: " + answer + " for May 7 ☕❤️";
+
+  const url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
+
+  // show link + auto try click
+  document.getElementById("card").innerHTML = `
+    <p>Opening WhatsApp... 😄</p>
+    <a id="waLink" href="${url}" target="_blank">Continue</a>
+  `;
+
+  // try auto-click (may work in some browsers)
+  setTimeout(() => {
+    document.getElementById("waLink").click();
+  }, 300);
+}
+</script>
+
+</body>
+</html>
